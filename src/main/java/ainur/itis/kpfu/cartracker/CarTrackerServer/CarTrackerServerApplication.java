@@ -22,9 +22,8 @@ import java.util.*;
 public class CarTrackerServerApplication {
 
 	private static Integer year = 2017;
-	private static DateFormat df = new SimpleDateFormat("yyyyMMdd");
 
-	public static void main(String[] args) throws java.text.ParseException {
+	public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(CarTrackerServerApplication.class, args);
 		AccidentDataService accidentDataService = context.getBean(AccidentDataService.class);
 
@@ -46,15 +45,16 @@ public class CarTrackerServerApplication {
 		}
 
 		List<AccidentData> accidentDataList = new ArrayList<>();
-		for (int i = 0; i < data.size(); i++) {
-			JSONObject obj = (JSONObject) data.get(i);
+		for (Object aData : data) {
+			JSONObject obj = (JSONObject) aData;
 			AccidentData accidentData = new AccidentData(year,
-					Double.parseDouble((String)obj.get("latitude")),
-					Double.parseDouble((String)obj.get("longitutde")),
-					Integer.parseInt((String)obj.get("reg_code")),
-					(String)obj.get("address"),
-					(String)obj.get("reg_name"),
+					Double.parseDouble((String) obj.get("latitude")),
+					Double.parseDouble((String) obj.get("longitutde")),
+					Integer.parseInt((String) obj.get("reg_code")),
+					(String) obj.get("address"),
+					(String) obj.get("reg_name"),
 					(String) obj.get("crash_time"));
+			accidentDataList.add(accidentData);
 		}
 
 		return accidentDataList;
